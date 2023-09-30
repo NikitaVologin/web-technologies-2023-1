@@ -2,10 +2,112 @@
 @import "./fonts.css";
 @import "./utils.css";
 
-.test {
-    color: yellow !important;
+p.pclass {
+    font-size: 16px;
+    line-height: 26px;
+    color: #1F3F68;
 }
 
-.test {
-    color: red !important;
+h1.h1style {
+    font-size: 64px;
+    color: #1F3F68;
 }
+
+h2.h2styleContacts{
+    font-weight: 500;
+    font-size: 44px;
+    text-align: center;
+}
+
+h3.h3style{
+    font-size: 36px;
+    text-align: center;
+}
+
+h4.h4style{
+    font-size: 20px;
+    line-height: 30px;
+    color: #1F3F68
+}
+
+input.inputstyle{
+    border: 1px solid #356EAD;
+    box-sizing: border-box;
+    border-radius: 10px;
+    opacity: 0.4;
+}
+
+textarea.inputstyle{
+    border: 1px solid #356EAD;
+    box-sizing: border-box;
+    border-radius: 10px;
+    opacity: 0.4;
+}
+
+input.submit{
+    background: #5A98D0;
+    box-shadow: 5px 20px 50px rgba(16, 112, 177, 0.2);
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+
+form.style{
+    background-image: url(https://s.ura.news/760/images/news/upload/news/589/712/1052589712/139663_Myasokombinat_Veles_Chistoozerye_pelymeni_polufabrikati_250x0_4769.3187.0.0.jpg);
+    background-size:contain;
+    background-repeat: no-repeat;
+    width: 300px;
+    height: 200px;
+}
+
+.angled-gradient {
+    background: linear-gradient(100deg, rgb(59, 59, 202), 70%, rgb(179, 66, 202));
+    box-shadow: 5px 20px 50px rgba(16, 112, 177, 0.2);
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    border: none;
+    padding: 3px 20px;
+  }
+
+  /* Стиль списка */
+ul.breadcrumb {
+    padding: 10px 16px;
+    list-style: none;
+    background-color: #eee;
+    background: linear-gradient(rgb(255, 255, 255), rgb(22, 85, 100));
+  }
+  
+  /* Отображение элементов списка бок о бок */
+  ul.breadcrumb li {
+    display: inline;
+    font-size: 18px;
+  }
+
+  ul.breadcrumb li {
+    border-right-color: black;
+    border-radius: 20px;
+    border: 0.5px;
+    border-left: 0px;
+    border-bottom: 0px;
+    border-top: 0px;
+    border-style:solid;
+    padding: 10px 15px 10px 0px;
+   
+    box-shadow: 6px 0px 3px -4px rgb(0, 0, 0),
+    -6px 0px 2px -4px rgb(255, 255, 255) inset;
+  }
+  
+  ul.breadcrumb li a {
+    color: #000000;
+    text-decoration: none;
+  }
+  
