@@ -1,0 +1,46 @@
+.menu{
+    display: inline-flex;
+    margin-left: 108px;
+    margin-right: 208px;
+    margin-top: 24px;
+    padding: 0px 24px;
+    align-items: center;
+    gap: 80px;
+    border-radius: 12px;
+    background: var(--White, #FFF);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.08);
+    position: absolute;
+}
+
+.logo{
+    display: inline;
+    width: 120px;
+    height: 24px;    
+}
+
+ul.menu_list{
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+
+li.menu_list_point {
+    display: inline;
+}
+
+ul.menu_list_contacts{
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+}
+
+li.menu_list_contact{
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.mail{
+
+}
