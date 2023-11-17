@@ -10,6 +10,8 @@ h1, h2, h3, h4, h5{
     margin: 0 0 0 0;
 }
 
+
+
 body{
     margin: 0 0 0 0;
     width: 1440px;
@@ -77,6 +79,11 @@ li.menu_list_point {
     font-weight: 500;
     line-height: 18px; /* 128.571% */
     letter-spacing: -0.154px;
+}
+
+a.menu_list_point_a {
+    text-decoration: none;
+    color:#101828 !important;
 }
 
 .menu_contacts{
@@ -257,3 +264,6 @@ letter-spacing: -0.078px;
     z-index: 1000;
 }
 
+.form_FAQ{
+    margin-bottom: 324px;
+}
