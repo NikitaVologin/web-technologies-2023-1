@@ -1,20 +1,22 @@
-@import "./global.css";
-@import "./fonts.css";
-@import "./utils.css";
+@import "/src/assets/styles//global.css";
+@import "/src/assets/styles/fonts.css";
+@import "/src/assets/styles//utils.css";
 
-/* *{
+   /* *{
     outline: 1px solid red;
-    } */
+    }    */
 
-h1, h2, h3, h4, h5{
+h1, h2, h3, h4, h5, p{
     margin: 0 0 0 0;
 }
-
-
 
 body{
     margin: 0 0 0 0;
     width: 1440px;
+}
+
+.background_mobile, .phone_mobile{
+    display: none;
 }
 
 .background_photo{
@@ -39,6 +41,10 @@ body{
     height: 900px;
     background: var(--gray-100, #F2F4F7);
     z-index: -1000;
+}
+
+.menu_group{
+    display: none;
 }
 
 .menu{
@@ -140,7 +146,6 @@ a.menu_list_point_a {
 }
 
 .form_content_first h2{
-    width: 600px;
     margin: 0 0 0 0;
     color: var(--gray-900, #101828);
     font-feature-settings: 'clig' off, 'liga' off;
@@ -157,7 +162,6 @@ a.menu_list_point_a {
 }
 
 .form_content_second p{
-    width: 600px;
     color: var(--gray-900, #101828);
     font-feature-settings: 'clig' off, 'liga' off;
     margin: 0 0 0 0;
@@ -239,31 +243,27 @@ letter-spacing: -0.078px;
     border: none;
 }
 
-.form_consultation button{
+.form_button {
     display: flex;
     padding: 11px 24px;
     align-items: flex-start;
     gap: 8px;
-    color: #FFF;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: SF Pro Text Semibold;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 18px;
-    letter-spacing: -0.154px;
     border-radius: 8px;
     border-width: 0;
-    border-color: #2D66EE;
-    background: #2D66EE;
-    text-align: left;
+    background: var(--accent, #2D66EE);
     width: 132px;
 }
 
-.form_techContent{
-    z-index: 1000;
+.button_text{
+    color: var(--White, #FFF);
+    font-feature-settings: 'clig' off, 'liga' off;
+    /* SF Subhead Semibold */
+    font-family: SF Pro Text;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; /* 128.571% */
+    letter-spacing: -0.154px;
+    text-align: left;
 }
 
-.form_FAQ{
-    margin-bottom: 324px;
-}

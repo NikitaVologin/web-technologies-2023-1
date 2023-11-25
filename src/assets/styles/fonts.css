@@ -17,3 +17,15 @@
     src: url("/static/fonts/SFProText-Semibold.ttf");
     font-weight: 600;
 }
+
+@font-face {
+    font-family: "SF Pro Display";
+    src: url("/static/fonts/SF-Pro-Display-Medium.otf");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "SF Pro Text";
+    src: url("/static/fonts/SFProText-Regular/SFProText-Regular.ttf");
+    font-weight: 400;
+}
