@@ -1,4 +1,4 @@
-@media screen and (min-device-width: 0) and (max-device-width: 425px) {
+@media screen and (min-device-width: 0px) and (max-device-width: 767px) {
 
     body {
         width: 425px;
