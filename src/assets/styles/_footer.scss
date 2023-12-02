@@ -54,6 +54,13 @@
     width: 100%;
 }
 
+.footer_content_listpoint{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+}
+
 .footer_content_point{
     display: flex;
     flex-direction: column;

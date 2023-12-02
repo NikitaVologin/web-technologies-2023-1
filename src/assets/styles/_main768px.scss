@@ -12,12 +12,34 @@
         width: 1000px;
     }
 
+    @keyframes movement_left {
+        0%{
+          transform: rotate(-12deg) translateY(100px);
+        }
+        100%{
+          transform: rotate(-12deg) translateY(-300px);
+        }
+      }
+      
+      @keyframes movement_right {
+        0%{
+          transform: rotate(-12deg) translateY(-200px);
+        }
+        100%{
+          transform: rotate(-12deg) translateY(200px);
+        }
+      }
+
     .background_photo2{
         margin-left: -520px; margin-top: 300px;
+        animation: movement_right 6s infinite alternate linear;
+        animation-iteration-count: infinite;
     }
 
     .background_photo{
         margin-left: -350px; margin-top: 500px;
+        animation: movement_left 6s infinite alternate linear;
+        animation-iteration-count: infinite;
     }
 
     .background_photo img, .background_photo2 img{

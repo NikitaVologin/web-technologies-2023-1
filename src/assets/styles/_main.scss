@@ -1,7 +1,3 @@
-@import "/src/assets/styles//global.css";
-@import "/src/assets/styles/fonts.css";
-@import "/src/assets/styles//utils.css";
-
    /* *{
     outline: 1px solid red;
     }    */
@@ -15,6 +11,24 @@ body{
     width: 1440px;
 }
 
+@keyframes movement_left {
+    0%{
+      transform: rotate(-12deg) translateY(400px);
+    }
+    100%{
+      transform: rotate(-12deg) translateY(-400px);
+    }
+  }
+  
+  @keyframes movement_right {
+    0%{
+      transform: rotate(-12deg) translateY(-400px);
+    }
+    100%{
+      transform: rotate(-12deg) translateY(400px);
+    }
+  }
+
 .background_mobile, .phone_mobile{
     display: none;
 }
@@ -22,17 +36,21 @@ body{
 .background_photo{
     position:absolute;
     flex-shrink: 0;
-    transform: rotate(-12deg);
     left: 780px; top:-563px;
     z-index: -999;
+
+    animation: movement_left 10s infinite alternate linear;
+    animation-iteration-count: infinite;
 }
 
 .background_photo2{
     position:absolute;
     flex-shrink: 0;
-    transform: rotate(-12deg);
     left: 1180px; top:-630px;
     z-index: -1000;
+
+    animation: movement_right 10s infinite alternate linear;
+    animation-iteration-count: infinite;
 }
 
 .phone{
