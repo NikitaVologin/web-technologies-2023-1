@@ -1,0 +1,37 @@
+.pizza-cell-list{
+    display: flex;
+    width: 480px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.pizza-cell{
+    display: block;
+    width: 150px;
+    height: 160px;
+    padding-bottom: 25px;
+
+    border-radius: 12px;
+    background-color: white;
+    border: none;
+    
+    transition-duration: 0.3s;
+}
+
+.pizza-cell:hover{
+    background-color: rgba(137, 151, 151, 0.158);
+}
+
+.pizza-image{
+    display: block;
+    width: 100%;
+}
+
+.pizza-name{
+    display: block;
+    text-align: center;
+    padding-top: 3px;
+    font-weight: bold; 
+}
