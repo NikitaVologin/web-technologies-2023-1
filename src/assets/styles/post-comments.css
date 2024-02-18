@@ -1,0 +1,52 @@
+.post-comments{
+    width: 80%;
+}
+
+.post-comments-header{
+    border-bottom: 1px black solid;
+}
+
+.post-comment{
+
+}
+
+.post-comment-header{
+    display: flex;
+    flex-direction: row;
+}
+
+.post-comment-header-icon{
+    width: 50px;
+    height: 50px;
+}
+
+.post-comment-header-contacts{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.post-comment-header-contacts-email{
+
+}
+
+.post-comment-email-text{
+
+}
+
+.post-comment-header-contacts-name{
+
+}
+
+.post-comment-name-text{
+
+}
+
+.post-comment-body{
+
+}
+
+.post-comment-body-text{
+    margin-left: 50px;
+    border-bottom: 1px black solid;
+}   

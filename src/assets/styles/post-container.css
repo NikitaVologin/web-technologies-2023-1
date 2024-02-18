@@ -1,0 +1,36 @@
+@import "post-header.css";
+@import "post-body.css";
+@import "post-comments.css";
+@import "post-bottom.css";
+
+/* *{
+    border: 1px red solid;
+} */
+
+h1, h2, h3, h4, h5, p{
+    margin: 0 0 0 0;
+}
+
+body{
+    margin: 0 0 0 0;
+    width: 100%;
+}
+
+.window{
+    display: flex;
+    justify-content: center;
+}
+
+.post-container{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 700px;
+}
+
+.post-part{
+    display: flex;
+    width: 80%;
+    flex-direction: row;
+}

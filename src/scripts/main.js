@@ -1,433 +1,345 @@
-class PizzaDescription{
-    constructor(name, price, energy, src){
-        this.name = name;
-        this.price = price;
-        this.energy = energy;
-        this.src = src;
-    }
-}
+class Post{
+      comments = [];
+      constructor(id, user, title, body, comments = []){
+            this.id = id;
+            this.user = user;
+            this.title = title;
+            this.body = body;
+            this.comments = comments;
+      }
 
-class Pizza{
-    toppings = [];
-    constructor(pizzaDescription, size, toppingsDescriptions){
-        this.size = size;
-        this.description = pizzaDescription; 
-        this.toppings = toppingsDescriptions.forEach(td =>
-                this.addTopping(td)
-            );
-    }
+      addComment(comment){
+            this.comments.push(comment);
+      }
 
-    addTopping(td) {
-        let new_topping = new Topping(td);
-        new_topping.size = this.size;
-        this.toppings.push(new_topping);
-    }   
+      addComments(comments){
+            comments.forEach(comment => this.addComment(comment));
+      }
+      
+      equals(other_post){
+            return this.user == other_post.user &&
+                  this.title == other_post.title &&
+                  this.body == other_post.body &&
+                  this.comments.quals_comments(comments);
+      }
 
-    removeTopping(topping) {
-        let index = -1;
-        for(let t of this.toppings){
-            if(t.name === topping.name){
-                index = this.toppings.indexOf(t);
-                break;
+      equals_comments(other_comments){
+            let lenbool = this.comments.length == other_comments.length;
+            let comequals = false;
+            if(lenbool){
+                  for(let i = 0; i < this.comments.length; i++ ){
+                        comequals += this.comments[i].equals(other_comments[i]);
+                  }
+                  return comequals == this.comments.length;
             }
-        }      
-        if(index != -1){
-            this.toppings.splice(index, 1)
-        }
-    } 
+            return false;
+      }
+}
 
-    getToppings() {
-        return this.toppings;
-    }   
+class Comment{
+      constructor(postId, id, name, email, body){
+            this.postId = postId;
+            this.id = id;
+            this.name = name;
+            this.email = email;
+            this.body = body;
+      }
+      equals(other_comment){
+            return this.postId == other_comment.postId &&
+                  this.name == other_comment.name &&
+                  this.email == other_comment.email &&
+                  this.body == other_comment.body;
+      }
+}
 
-    getSize() {
-        return this.size;
-    }      
-
-    getStuffing() {
-        return this.description.name;      
-    }   
-
-    calculatePrice() {
-        let toppings_price = 0;
-        this.toppings.forEach(topping => {
-            toppings_price += topping.totalPrice();
-        });
-        return this.description.price + this.size.price() + toppings_price;
-    }   
-
-    calculateCalories() {
-        let toppings_energy = 0;
-        this.toppings.forEach(topping => {
-            toppings_energy += topping.totalEnergy();
-        })
-        return this.description.energy + this.size.energy() + toppings_energy;
-    }     
-
-    equals(another_pizza){
-        return  this.description === another_pizza.description && 
-                this.toppings.toString() === another_pizza.toppings.toString();
-    }
-
-    print(){
-        let str = "\n";
-        if(this.toppings.length != 0){
-            for(let topping of this.toppings){
-                str += topping.toString() + "\n";
+class APIController{
+      constructor(){}
+      
+      async getPosts(){
+            try{
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts`); 
+                  let result = await response.text();
+                  return JSON.parse(result); 
             }
-        }
-        else{
-            str = "нет " + "\n";
-        }
-        return "Добавки: " + str 
-            + "Пицца: " + this.getStuffing() + "\n"
-            + "Размер: " + this.getSize().toString() + "\n"
-            + "Итоговая цена: " + this.calculatePrice() + "\n"
-            + "Итоговая калорийность: " + this.calculateCalories();
-    }
-}
-
-class PizzaSizeDescription{
-    constructor(name, price, energy, price_coef, energy_coef){
-        this.name = name;
-        this.price = price;
-        this.energy = energy;
-        this.price_coef = price_coef;
-        this.energy_coef = energy_coef;
-    }
-}
-
-class PizzaSize{
-    constructor(pizzaSizeDescription){
-        this.description = pizzaSizeDescription;
-    }
-    toString(){
-        return this.description.name;
-    }
-
-    get price(){
-        return this.description.price;
-    }
-
-    get energy(){
-        return this.description.energy;
-    }
-
-    get price_coef(){
-        return this.description.price_coef;
-    }
-
-    get energy_coef(){
-        return this.description.energy_coef;
-    }
-}
-
-class TappingDescription{
-    constructor(name, price, energy, src){
-        this.name = name;
-        this.price = price;
-        this.energy = energy;
-        this.src = src;
-    }
-}
-
-class Topping{
-    #size;
-    constructor(tappingDescription){
-        this.description = tappingDescription;
-    }
-
-    set size(value){
-        this.#size = value;
-    }
-
-    totalPrice(){
-        return this.description.price * this.#size.price_coef;
-    }
-
-    totalEnergy(){
-        return this.description.energy * this.#size.energy_coef;
-    }
-
-    toString(){
-        return this.description.name;
-    }
-}
-
-class Basket{
-    pizza= [];
-
-    constructor(){}
-
-    add(new_pizza){
-        this.pizza.push(new_pizza);
-    }
-
-    remove(delete_pizza){
-        for(let p of pizza){
-            if(delete_pizza.equals(p)){
-                let index = pizza.indexOf(p);
-                this.pizza.splice(index, 1);
-                break; 
+            catch (error){
+                  console.log(error);
             }
-        }
-    }
-    
-    get energy(){
-        let energy = 0;
-        for(let p of pizza){
-            energy += p.energy();
-        }
-        return energy;
-    }
+      }
 
-    get price(){
-        let price = 0;
-        for(let p of pizza){
-            price += p.energy();
-        }
-        return price;
-    }
+      async getPostById(id){
+            try{
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`); 
+                  let result = await response.text();
+                  return JSON.parse(result); 
+            }
+            catch (error){
+                  console.log(error);
+            }
+      }
+
+      async getPostCommentsByPostId(post_id){
+            try{
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}/comments`); 
+                  let result = await response.text();
+                  return JSON.parse(result);   
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async addPost(post){
+            try{
+                  let response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                          title: post.title,
+                          body: post.body,
+                          userId: post.user,
+                        }),
+                        headers: {
+                          'Content-type': 'application/json; charset=UTF-8',
+                        },
+                      });
+                  let result = await response.json();
+                  return result.equals(post);
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async updatePost(post_id, new_post){
+            try{
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                          id: post_id,
+                          title: new_post.title,
+                          body: new_post.body,
+                          userId: new_post.user,
+                        }),
+                        headers: {
+                          'Content-type': 'application/json; charset=UTF-8',
+                        },
+                      });
+                  let result = response.json();
+                  return new_post.equals(result);
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async pathPost(post_id, data){
+            try{
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify(data),
+                        headers: {
+                          'Content-type': 'application/json; charset=UTF-8',
+                        },
+                      });
+                  let result = await response.json();
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async deletePost(post_id){
+            try{
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}`, {
+                        method: 'DELETE',
+                  });
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
 }
 
-class PizzaCatalog{
-    pizza_variants = [
-        new PizzaDescription("Маргарита", 500, 300, "assets/img/pizza/margarita.png"),
-        new PizzaDescription("Пепперони", 800, 400, "assets/img/pizza/pepporoni.png"),
-        new PizzaDescription("Баварская", 700, 450, "assets/img/pizza/bavarskaya.png")
-    ]; 
-    constructor(){}
+class PostRepository{
+      posts = [];
+      
+      constructor(controller, postMapper, commentMapper){
+            this.controller = controller;
+            this.postMapper = postMapper;
+            this.commentMapper = commentMapper;
+      }
+
+      get count() {
+            return this.posts.length;
+      }
+
+      async getPosts(){
+            this.posts = [];
+            var result = await this.controller.getPosts();
+            for(var post_result of result){
+                  let comments = await this.controller.getPostCommentsByPostId(post_result.id);
+                  let post = this.postMapper.objectToPost(post_result).addComments(comments);
+                  this.posts.push(post);
+            }
+      }
+
+      async getPostById(id){
+            let filtered_post = this.posts.filter((post) => post.id == id);
+            if(filtered_post.length == 0){
+                  let result_post = await this.controller.getPostById(id);
+                  let post = this.postMapper.objectToPost(result_post);
+                  let result_comments = await this.controller.getPostCommentsByPostId(id);
+                  let comments = [];
+                  result_comments.forEach(comment => comments.push(this.commentMapper.objectToComment(comment)));
+                  post.addComments(comments);
+                  this.posts.push(post);
+                  return post;
+            }
+            else{
+                  return filtered_post[0];
+            }
+      }
+
+      async addPost(post){
+
+      }
+
+      async updatePost(post_id, new_post){
+
+      }
+
+      async pathPost(post_id, data){
+
+      }
+
+      async deletePost(post_id){
+            
+      }
 }
 
-class ToppingCatalog{
-    topping_variants = [
-        new TappingDescription("Сливочная моцарелла", 50, 100, "assets/img/toppings/mocarella.png"),
-        new TappingDescription("Сырный борт", 150, 50, "assets/img/toppings/bortik.png"), 
-        new TappingDescription("Чедер и пармезан", 150, 50, "assets/img/toppings/chedder.png")
-    ];
-    constructor(){}
+class PostMapper{
+      constructor(){}
+
+      objectToPost(object_post){
+            return new Post(object_post.id, object_post.userId, object_post.title, object_post.body);
+      }
 }
 
-class SizeCatalog{
-    size_variants = [
-        new PizzaSizeDescription("Маленький", 100, 100, 1, 1),
-        new PizzaSizeDescription("Большой", 200, 200, 2, 2)
-    ];
-    constructor(){}
+class CommentMapper{
+      constructor(){}
+      
+      objectToComment(object_comment){
+            return new Comment(object_comment.postId, object_comment.id, object_comment.name, object_comment.email, object_comment.body);
+      }
 }
 
-class Store{    
-    constructor(){
-        this.pizzaCatalog = new PizzaCatalog();
-        this.toppingCatalog = new ToppingCatalog();
-        this.sizeCatalog = new SizeCatalog();
-        this.littleSize = new PizzaSize(this.sizeCatalog.size_variants[0]);
-        this.bigSize = new PizzaSize(this.sizeCatalog.size_variants[1]);
-        this.basket = new Basket();
-    }
+class HTMLWorker{
+      constructor(post_repository){
+            this.post_repository = post_repository;
+            this.post_id = 1;
+      }
 
-    putPizza(pizza){
-        this.basket.add(pizza);
-    }
+      get id(){
+            return this.post_id;
+      }
 
-    removePizza(pizza){
-        this.basket.remove(pizza);
-    }
+      set id(value){
+            if(value < 1 || value >= this.post_repository.length){
+                  throw new RangeError();
+            }
+            this.post_id = value;
+      }
 
-    basketEnergy(){
-        return basket.energy();
-    }
+      setButton(el){
+            const func =  async () => {
+                  let value = parseInt(el.value);//el.getAttribute('id') == "left-button" ? -1 : 1; 
+                  this.id += value;
+                  let old_node = Array.from(document.getElementsByClassName("post-part"));
+                  let post = await this.post_repository.getPostById(this.id);
+                  let post_view = this.getPostView(post);
+                  let div = document.getElementsByClassName("post-container")[0];
+                  let comment_div = document.getElementsByClassName("post-comments")[0];
+                  if(old_node.length == 0){
+                        div.prepend(post_view);
+                  }
+                  else{
+                        div.replaceChild(post_view, old_node[0]);
+                        let old_comments = Array.from(document.getElementsByClassName("post-comment"));
+                        old_comments.forEach(oc => comment_div.removeChild(oc));
+                  }
+                  for(let c of post.comments){
+                        comment_div.append(this.getCommentView(c));
+                  }
+            };
+            el.addEventListener("click", func);
+      }
+      
+      getPostView(post){
+            let div = document.createElement("div");
+            div.className = "post-part";
+            div.innerHTML =`
+                  <div class="post-header">
+                        <div class="post-header-user">
+                              <img class="post-header-user-icon" src="assets/img/user.png">
+                              <p class="post-header-user-name">${post.user}</p>
+                        </div>
+                  </div>  
+                  <div class="post-body">
+                        <p class="post-body-id">${post.id}</p>
+                        <div class="post-header-title">
+                              <p>${post.title}</p>
+                        </div> 
+                        <p class="post-body-text">${post.body}</p>
+                  </div>
+            `;
+            return div;
+      }
+      
+      getCommentView(comment){
+            let div = document.createElement("div");
+            div.className = "post-comment";
+            div.innerHTML = `
+                  <div class="post-comment-header">
+                        <img class="post-comment-header-icon" src="assets/img/user.png">
+                        <div class="post-comment-header-contacts">
+                              <div class="post-comment-header-contacts-email">
+                                    <p class="post-comment-email-text">${comment.email}</p>
+                              </div>
+                              <div class="post-comment-header-contacts-name">
+                              <p class="post-comment-name-text">${comment.name}</p>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="post-comment-body">
+                        <p class="post-comment-body-text">${comment.body}</p>
+                  </div>
+            `;
+            return div;
+      }
+      async FillScreen(){
+            let post = await this.post_repository.getPostById(this.id);
+            let post_view = this.getPostView(post);
+            let div = document.getElementsByClassName("post-container")[0];
+            div.prepend(post_view);
 
-    basketPrice(){
-        return basket.price();
-    }
-
-    handleOrder(order){
-        let new_order = new Order();
-        Object.assign(new_order, order);
-
-        new_order.fillOrder();
-        this.putPizza(new_order.ordered_pizza);
-    }
-
-    get pizzaVariants(){
-        return this.pizzaCatalog.pizza_variants;
-    }
-
-    get toppingVariants(){
-        return this.toppingCatalog.topping_variants;
-    }
+            let comment_div = document.getElementsByClassName("post-comments")[0];
+            let comments = post.comments;
+            comments.forEach(comment => comment_div.append(this.getCommentView(comment)));
+      }
 }
-
-class Order{
-    description;
-    size;
-    toppings = [];
-    #pizza;
-    constructor(){}
-
-    set description(value){
-        this.description = this.description;
-    }
-
-    get pizzaPrice(){
-        if(this.description != undefined){
-            return this.description.price;
-        }
-        else{
-            return 0;
-        }
-    }
-
-    get pizzaEnergy(){
-        if(this.description != undefined){
-            return this.description.energy;
-        }
-        else{
-            return 0;
-        }
-    }
-
-    get pizzaIsReady(){
-        return this.description != undefined && this.size != undefined;
-    }
-
-    set size(value){
-        this.size = value;
-    }
-
-    addTopping(topping){
-        this.toppings.push(topping);
-    }
-
-    get ordered_pizza(){
-        return this.#pizza;
-    } 
-
-    get currentPrice(){
-        let topping_price = 0;
-        for(let t of this.toppings){
-            topping_price += t.price * this.size.price_coef;
-        }
-        return this.pizzaPrice + this.size.price + topping_price;
-    }
-
-    get currentEnergy(){
-        let topping_energy = 0;
-        for(let t of this.toppings){
-            topping_energy += t.energy * this.size.energy_coef;
-        }
-        return this.pizzaEnergy + this.size.energy + topping_energy;
-    }
-
-
-    fillOrder(){
-        if(this.pizzaIsReady){
-            this.#pizza = new Pizza(this.description, this.size, this.toppings);
-        }
-        else{
-            this.#pizza = null;
-        }
-    }
-}
-
-let store = new Store();
-let order = new Order();
+const post_rep = new PostRepository(new APIController(), new PostMapper(), new CommentMapper());
+const worker = new HTMLWorker(post_rep); 
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+      document.addEventListener('DOMContentLoaded', init);
 } 
 else {
-    init();
+      init();
 }
-
+  
 function init(){
-    order.size = store.littleSize;
-    for(let pizzaD of store.pizzaVariants){
-        let referenceNode = document.getElementsByClassName("pizza-cell-list")[0];
-        let button = getPizzaHTML(pizzaD);
-        button.description = pizzaD;
-        referenceNode.appendChild(button);
-    }
-    for(let toppingD of store.toppingVariants){
-        let referenceNode = document.getElementsByClassName("form-toppings-list")[0];
-        let button = getToppingHTML(toppingD);
-        button.description = toppingD;
-        referenceNode.appendChild(button);
-    }
-    updateAcceptButton();
-
-    let size_pick_buttons = Array.from(document.getElementsByClassName("form-size-pick-button"));
-
-    let active_button = size_pick_buttons.filter(b => !b.classList.contains("form-size-pick-notselected-button"))[0];
-    let non_active_button = size_pick_buttons.filter(b => b.classList.contains("form-size-pick-notselected-button"))[0];
-
-    active_button.size = store.littleSize;
-    non_active_button.size = store.bigSize;
-
-    size_pick_buttons.forEach(button => 
-            button.onclick = (event) => {
-                let another_button = null;
-                if(button.classList.contains("form-size-pick-notselected-button")){
-                    another_button = size_pick_buttons.filter(b => !b.classList.contains("form-size-pick-notselected-button"))[0];
-                    button.classList.remove("form-size-pick-notselected-button");
-                    another_button.classList.add("form-size-pick-notselected-button");
-                    order.size = button.size;
-                    updateAcceptButton();
-                }
-            }
-        );
-
-    let accept_button = document.getElementsByClassName("form-accept-button")[0];
-    accept_button.onclick = (event) =>{
-        if(order.pizzaIsReady){
-            store.handleOrder(order);
-            order = new Order();
-            let size_pick_buttons = Array.from(document.getElementsByClassName("form-size-pick-button"));
-            let active_button = size_pick_buttons.filter(b => !b.classList.contains("form-size-pick-notselected-button"))[0];
-            order.size = active_button.size;
-            updateAcceptButton();
-        }
-        else{
-            alert("Закончите выбор пиццы!");
-        }
-    }
-}
-
-function updateAcceptButton(){
-    let accept_button_text = document.getElementById("form-accept-button-change-text");
-    accept_button_text.textContent = `${order.currentPrice}Р (${order.currentEnergy}Ккал)`;
-}
-
-function getPizzaHTML(pizzaD){
-    let div = document.createElement('button');
-    div.className = "pizza-cell";
-    let html_code =     
-        `<img class="pizza-image" src="${pizzaD.src}">
-        <p class="pizza-name">${pizzaD.name}</p>`    
-    div.innerHTML = html_code;
-
-    div.onclick = (event) => {
-        order.description = div.description;
-        updateAcceptButton();
-    };
-
-    return div;
-}
-
-function getToppingHTML(toppingD){
-    let div = document.createElement('button');
-    div.className = "form-topping";
-    let html_code =     
-        `<img class ="form-topping-image" src="${toppingD.src}">
-        <p class="form-topping-name">${toppingD.name}</p>
-        <p class="form-topping-price">${toppingD.price}P</p>`    
-    div.innerHTML = html_code;
-
-    div.onclick = (event) => {
-        order.addTopping(div.description);
-        updateAcceptButton();
-    };
-
-    return div;
+      worker.FillScreen();
+      let buttons = Array.from(document.getElementsByClassName("post-bottom-button"));
+      buttons.forEach((button) => {
+            worker.setButton(button);
+      }); 
 }

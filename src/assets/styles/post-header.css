@@ -1,0 +1,27 @@
+.post-header{
+    display: flex;
+    flex-direction: column;
+
+    flex-wrap: wrap;
+    width: 15%;
+}
+
+.post-header-user{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: start;
+    align-content: center;
+}
+
+.post-header-user-icon{
+    width: 80px;
+    height: 80px;
+}
+
+.post-header-user-name{
+
+}
+
+.post-header-title{
+    border-top: 1px black solid;
+}

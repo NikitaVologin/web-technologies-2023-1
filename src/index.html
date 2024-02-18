@@ -3,40 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets\styles\pizza-page.css">
-    <title>Pizza calculator</title>
+    <link rel="stylesheet" href="assets\styles\post-container.css">
+    <title>Posts</title>
 </head>
 <body>
-    <main>
-    <dev class="pizza-page">
-        <dev class="pizza-cell-list">
-         </dev>  
-         <dev class="pizza-form">
-            <dev class="form-size-pick">
-                <dev class="form-size-pick-title">
-                    <h1 class="form-size-pick-title-text">Выберите размер</h1>
-                    <img src="assets\icons\info-icon.svg" alt="info icon" width="20" height="20">
-                </dev>
-                <dev class="form-size-pick-buttons">
-                    <button class="form-size-pick-button">
-                        <p class="form-size-pick-button-text">Маленькая</p>
-                    </button>
-                    <button class="form-size-pick-button form-size-pick-notselected-button">
-                        <p class="form-size-pick-button-text">Большая</p>
-                    </button>
-                </dev>
-                <dev class="form-add-toppings">
-                    <h2>Добавить по вкусу</h2>
-                    <dev class="form-toppings-list">
-                    </dev>
-                </dev>
-            </dev>
-            <button class="form-accept-button">
-                <p class="form-accept-button-text">Добавить в корзину за</p>
-                <p class="form-accept-button-text" id="form-accept-button-change-text"></p>
-            </button>
-         </dev>
-    </dev>
+    <main class="window">
+        <div class="post-container">
+            <div class="post-comments">
+                <p class="post-comments-header">Комментарии</p>
+            </div>
+            <div class="post-bottom">
+                <button class="post-bottom-button" value="-1">
+                    <img class="post-bottom-button-icon" src="assets/icons/arrow-left.svg">
+                </button>
+                <button class="post-bottom-button" value="1">
+                    <img class="post-bottom-button-icon" src="assets/icons/arrow-right.svg">
+                </button>
+            </div>
+        </div>
     </main>
 </body>
 <script src="scripts/main.js"></script>
