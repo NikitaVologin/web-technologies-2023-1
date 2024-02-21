@@ -3,25 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets\styles\post-container.css">
+    <link rel="stylesheet" href="assets\styles\todos-container.css">
     <title>Posts</title>
 </head>
 <body>
     <main class="window">
-        <div class="post-container">
-            <div class="post-comments">
-                <p class="post-comments-header">Комментарии</p>
+        <div class="todos-container">
+            <div class="todos-container-header">
+                <div class="todos-container-header-form">
+                    <p class="todos-container-header-form-user-text">Пользователь: </p>
+                    <input class="todos-container-header-form-input">
+                    <button class="todos-container-header-form-button">
+                        <p class="todos-container-header-form-button-text">ОК</p>
+                    </button>
+                </div>
+                <p class="todos-container-header-title">Задачи:</p>
             </div>
-            <div class="post-bottom">
-                <button class="post-bottom-button" value="-1">
-                    <img class="post-bottom-button-icon" src="assets/icons/arrow-left.svg">
+            <div class="todos-container-body-header">
+                <p class="todos-container-body-header-text">Статус</p>
+                <p class="todos-container-body-header-text">Задача</p>
+            </div>
+            <div class="todos-container-body">
+            </div>
+            <div class="todos-container-bottom">
+                <button class="todos-container-bottom-button">
+                    <p class="todos-container-bottom-text">Добавить новую задачу</p>
                 </button>
-                <button class="post-bottom-button" value="1">
-                    <img class="post-bottom-button-icon" src="assets/icons/arrow-right.svg">
+                <button class="todos-container-bottom-button" id="delete-button">
+                    <p class="todos-container-bottom-text">Удалить выбранные задачи</p>
                 </button>
             </div>
         </div>
+        <div class="add-newTodo-form">
+            <button class="add-newTodo-form-cancel">
+                <img class="add-newTodo-form-cancel-img" src="assets/icons/close-icon.svg">
+            </button>
+            <div class="add-newTodo-form-part">
+                <p class="add-newTodo-form-part-text">Title</p>
+                <input class="add-newTodo-form-part-input" id="add-newTodo-form-part-input-title">
+            </div>
+            <div class="add-newTodo-form-part">
+                <p class="add-newTodo-form-part-text">Status</p>
+                <input class="add-newTodo-form-part-input" type="checkbox" id="add-newTodo-form-part-input-checkbox">
+            </div>
+            <button class="add-newTodo-form-ok">
+                <p class="add-newTodo-form-ok-text">Ok</p>
+            </button>
+        </div>
     </main>
+
 </body>
 <script src="scripts/main.js"></script>
 </html>

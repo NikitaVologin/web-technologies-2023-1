@@ -1,0 +1,27 @@
+@import "todos-container-body.css";
+@import "todos-container-bottom.css";
+@import "todos-container-header.css";
+@import "add-newTodo-form.css";
+
+/* *{
+    border: 1px red solid;
+}  */
+
+h1, h2, h3, h4, h5, p, input, button{
+    margin: 0 0 0 0;
+}
+
+body{
+    margin: 0 0 0 0;
+    width: 100%;
+}
+
+.window{
+    display: flex;
+    justify-content: center;
+}
+
+.todos-container{
+    width: 1000px;
+    height: 100%;
+}   

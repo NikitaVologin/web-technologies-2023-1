@@ -1,0 +1,54 @@
+.todos-container-body{
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.todos-container-body-header{
+    display: flex;  
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.todos-container-body-header-text{
+    margin-right: 20px;
+}
+
+.todo-button{
+    border-radius: 12px;
+    background-color: white;
+    border: none;
+    
+    transition-duration: 0.3s;
+}
+
+.todo-button-selected{
+    border-radius: 12px;
+    background-color: rgba(137, 151, 151, 0.158);
+    border: none;
+}
+
+.todo:hover{
+    background-color: rgba(137, 151, 151, 0.158);
+}
+
+.todo{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: start;
+    align-content: start;
+}
+
+.todo-checkbox{
+    margin-right: 53px;
+}
+
+.todo-text{
+    word-wrap: break-word;
+}

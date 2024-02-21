@@ -1,63 +1,74 @@
-class Post{
-      comments = [];
-      constructor(id, user, title, body, comments = []){
+class Todo{
+      #completed;
+      constructor(id, userId, title, completed){
             this.id = id;
-            this.user = user;
+            this.userId = userId;
             this.title = title;
-            this.body = body;
-            this.comments = comments;
+            this.completed = completed;
       }
 
-      addComment(comment){
-            this.comments.push(comment);
-      }
-
-      addComments(comments){
-            comments.forEach(comment => this.addComment(comment));
-      }
-      
-      equals(other_post){
-            return this.user == other_post.user &&
-                  this.title == other_post.title &&
-                  this.body == other_post.body &&
-                  this.comments.quals_comments(comments);
-      }
-
-      equals_comments(other_comments){
-            let lenbool = this.comments.length == other_comments.length;
-            let comequals = false;
-            if(lenbool){
-                  for(let i = 0; i < this.comments.length; i++ ){
-                        comequals += this.comments[i].equals(other_comments[i]);
-                  }
-                  return comequals == this.comments.length;
+      set completed(value){
+            if(value == "on"){
+                  this.#completed = true;
             }
-            return false;
+            else if(value == "off"){
+                  this.#completed = false;
+            }
+            else{
+                  this.#completed = value;
+            }
+      }
+
+      get completed(){
+            return this.#completed;
       }
 }
 
-class Comment{
-      constructor(postId, id, name, email, body){
-            this.postId = postId;
+class User{
+      constructor(id, name, email, adress, phone, website, company){
             this.id = id;
             this.name = name;
             this.email = email;
-            this.body = body;
-      }
-      equals(other_comment){
-            return this.postId == other_comment.postId &&
-                  this.name == other_comment.name &&
-                  this.email == other_comment.email &&
-                  this.body == other_comment.body;
+            this.adress = adress;
+            this.phone = phone;
+            this.website = website;
+            this.company = company;
       }
 }
 
-class APIController{
+class Adress{
+      constructor(street, suite, city, zipcode, geo){
+            this.street = street;
+            this.suite = suite;
+            this.city = city;
+            this.zipcode = zipcode;
+            this.geo = geo;
+      }
+}
+
+class Geo{
+      constructor(lat, lng){
+            this.lat = lat;
+            this.lng = lng;
+      }
+}
+
+class Company{
+      constructor(name, catchPhrase, bs){
+            this.name = name;
+            this.catchPhrase = catchPhrase;
+            this.bs = bs;
+      }
+}
+
+class TodoApiController{
+      TODOS = "todos";
+      USERS = "users";
       constructor(){}
-      
-      async getPosts(){
+
+      async getTodos(){
             try{
-                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts`); 
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/${this.TODOS}`); 
                   let result = await response.text();
                   return JSON.parse(result); 
             }
@@ -66,9 +77,9 @@ class APIController{
             }
       }
 
-      async getPostById(id){
+      async getTodoById(id){
             try{
-                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`); 
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/${this.TODOS}/${id}`); 
                   let result = await response.text();
                   return JSON.parse(result); 
             }
@@ -77,9 +88,12 @@ class APIController{
             }
       }
 
-      async getPostCommentsByPostId(post_id){
+      async getTodoByUserId(userId){
             try{
-                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}/comments`); 
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/${this.USERS}/${userId}/${this.TODOS}`); 
+                  if(!response.ok){
+                        throw new Error("Response not OK");
+                  }
                   let result = await response.text();
                   return JSON.parse(result);   
             }
@@ -88,70 +102,86 @@ class APIController{
             }
       }
 
-      async addPost(post){
+      async addTodo(todo){
             try{
-                  let response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/${this.TODOS}`, {
                         method: 'POST',
                         body: JSON.stringify({
-                          title: post.title,
-                          body: post.body,
-                          userId: post.user,
+                              userId: todo.userId,
+                              id: todo.id,
+                              title: todo.title,
+                              completed: todo.completed,
                         }),
                         headers: {
                           'Content-type': 'application/json; charset=UTF-8',
                         },
                       });
+                  if(!response.ok){
+                        throw new Error("Response not OK");
+                  }
                   let result = await response.json();
-                  return result.equals(post);
+                  return result;
             }
             catch(error){
                   console.log(error);
             }
       }
 
-      async updatePost(post_id, new_post){
+      async updateTodo(todo_id, new_todo){
             try{
-                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}`, {
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/${this.TODOS}/${todo_id}`, {
                         method: 'PUT',
                         body: JSON.stringify({
-                          id: post_id,
-                          title: new_post.title,
-                          body: new_post.body,
-                          userId: new_post.user,
+                              userId: new_todo.userId,
+                              id: new_todo.id,
+                              title: new_todo.title,
+                              completed: new_todo.completed,
                         }),
                         headers: {
                           'Content-type': 'application/json; charset=UTF-8',
                         },
                       });
-                  let result = response.json();
-                  return new_post.equals(result);
+                  
+                  if(!response.ok){
+                        throw new Error("Response not OK");  
+                  }
+                  let result = await response.json();
+                  return result;
             }
             catch(error){
                   console.log(error);
             }
       }
 
-      async pathPost(post_id, data){
+      async pathTodo(todo_id, data){
             try{
-                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}`, {
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/${this.TODOS}/${todo_id}`, {
                         method: 'PATCH',
                         body: JSON.stringify(data),
                         headers: {
                           'Content-type': 'application/json; charset=UTF-8',
                         },
                       });
+                  if(!response.ok){
+                        throw new Error("Response not OK");   
+                  }
+
                   let result = await response.json();
+                  return result;
             }
             catch(error){
                   console.log(error);
             }
       }
 
-      async deletePost(post_id){
+      async deleteTodo(todo_id){
             try{
-                  let response = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}`, {
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/${this.TODOS}/${todo_id}`, {
                         method: 'DELETE',
                   });
+                  if(!response.ok){
+                        throw new Error("Response not OK");
+                  }
             }
             catch(error){
                   console.log(error);
@@ -159,175 +189,282 @@ class APIController{
       }
 }
 
-class PostRepository{
-      posts = [];
-      
-      constructor(controller, postMapper, commentMapper){
-            this.controller = controller;
-            this.postMapper = postMapper;
-            this.commentMapper = commentMapper;
-      }
+class UserApiController{
+      USERS = "users";
+      constructor(){}
 
-      get count() {
-            return this.posts.length;
-      }
-
-      async getPosts(){
-            this.posts = [];
-            var result = await this.controller.getPosts();
-            for(var post_result of result){
-                  let comments = await this.controller.getPostCommentsByPostId(post_result.id);
-                  let post = this.postMapper.objectToPost(post_result).addComments(comments);
-                  this.posts.push(post);
+      async getUserById(id){
+            try{
+                  let response = await fetch(`https://jsonplaceholder.typicode.com/${this.USERS}/${id}`); 
+                  if(!response.ok){
+                        throw new Error("Response not OK");
+                  }
+                  let result = await response.text();
+                  return JSON.parse(result); 
             }
-      }
-
-      async getPostById(id){
-            let filtered_post = this.posts.filter((post) => post.id == id);
-            if(filtered_post.length == 0){
-                  let result_post = await this.controller.getPostById(id);
-                  let post = this.postMapper.objectToPost(result_post);
-                  let result_comments = await this.controller.getPostCommentsByPostId(id);
-                  let comments = [];
-                  result_comments.forEach(comment => comments.push(this.commentMapper.objectToComment(comment)));
-                  post.addComments(comments);
-                  this.posts.push(post);
-                  return post;
+            catch (error){
+                  console.log(error);
             }
-            else{
-                  return filtered_post[0];
-            }
-      }
-
-      async addPost(post){
-
-      }
-
-      async updatePost(post_id, new_post){
-
-      }
-
-      async pathPost(post_id, data){
-
-      }
-
-      async deletePost(post_id){
-            
       }
 }
 
-class PostMapper{
-      constructor(){}
+class UsersRepository{
+      users = [];
+      constructor(userApiController){
+            this.userApiController = userApiController;
+      }
 
-      objectToPost(object_post){
-            return new Post(object_post.id, object_post.userId, object_post.title, object_post.body);
+      async getUserById(id){
+            let filtered_user = this.users.filter(user => user.id == id);
+            if(filtered_user.length == 0){
+                  let new_user = await this.userApiController.getUserById(id);
+                  let user = this.objectToUser(new_user);
+                  this.users.push(user);
+                  return user;
+            }
+            return filtered_user[0];
+      }
+
+      objectToUser(object){
+            return new User(object.id, object.name, object.email, object.adress, object.phone, object.website, object.company);
       }
 }
 
-class CommentMapper{
-      constructor(){}
-      
-      objectToComment(object_comment){
-            return new Comment(object_comment.postId, object_comment.id, object_comment.name, object_comment.email, object_comment.body);
+class TodosRepository{
+      todos = [];
+      constructor(usersRepository, todosApiController){
+            this.usersRepository = usersRepository;
+            this.todosApiController = todosApiController;
+      }
+
+      async getTodos(){
+            try{
+                  let todos = await this.todosApiController.getTodos();
+                  return todos;
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async getTodoById(id){
+            try{
+                  let local_todos = this.todos.filter(el => {
+                        return el.id == id;
+                  });
+                  if(local_todos.length != 0){
+                         return local_todos[0];
+                  }
+                  let todo = await this.todosApiController.getTodoById(id);
+                  return todo;
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async getTodosByUserId(userId){
+            try{
+                  let local_todos = this.todos.filter(function(el) {
+                       return el.userId == userId;
+                  });
+                  if(local_todos.length != 0){
+                        return local_todos;
+                  }
+                  let user = await this.usersRepository.getUserById(userId);
+                  let todos = await this.todosApiController.getTodoByUserId(userId);
+                  todos.forEach(element => {
+                        element.user = user;
+                  });
+                  todos.forEach(el => this.todos.push(el));
+                  return todos;
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async addTodo(todo){
+            try{
+                  let result = await this.todosApiController.addTodo(todo);
+                  this.todos.push(result);
+                  return result;
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async updateTodo(todo_id, new_todo){
+            try{
+                  let old_todo = await this.getTodoById(todo_id); 
+                  old_todo.userId = new_todo.userId;
+                  old_todo.id = new_todo.id;
+                  old_todo.title = new_todo.title;
+                  old_todo.completed =  new_todo.completed;
+                  let result = await this.todosApiController.updateTodo(todo_id, new_todo);
+                  return result;
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async pathTodo(todo_id, data){
+            try{
+                  let result = await this.todosApiController.pathTodo(todo_id, data);
+                  return result;
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+
+      async deleteTodo(todo_id){
+            try{
+                  await this.todosApiController.deleteTodo(todo_id);
+                  let index = -1;
+                  for(let todo of this.todos){
+                      if(todo.id == todo_id){
+                          index = this.todos.indexOf(todo);
+                          break;
+                      }
+                  }      
+                  if(index != -1){
+                      this.todos.splice(index, 1)
+                  }     
+                  this.isDeleted = this.todos.length == 0;         
+            }
+            catch(error){
+                  console.log(error);
+            }
       }
 }
 
 class HTMLWorker{
-      constructor(post_repository){
-            this.post_repository = post_repository;
-            this.post_id = 1;
+      currentUserId = -1;
+      constructor(todosRepository){
+            this.todosRepository = todosRepository;
       }
 
-      get id(){
-            return this.post_id;
-      }
-
-      set id(value){
-            if(value < 1 || value >= this.post_repository.length){
-                  throw new RangeError();
+      getTodoHtmlView(todo){
+            let divCheckbox = document.createElement("button");
+            divCheckbox.className = "todo-button" 
+            let div = document.createElement("div");
+            div.className = "todo";
+            let checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "todo-checkbox";
+            checkbox.id_todo = `${todo.id}`;
+            if( todo.completed){
+                  checkbox.setAttribute("checked", "");
             }
-            this.post_id = value;
+            this.setUpUpdateCheckBox(checkbox);
+            div.prepend(checkbox);
+            let  titleText = document.createTextNode(todo.title);
+            titleText.className = "todo-text";
+            div.append(titleText); 
+            divCheckbox.append(div);
+            divCheckbox.id_todo = todo.id;
+            this.setUpSelectTitleButton(divCheckbox);
+            return divCheckbox;
+      }
+      
+      async updateTodoList(){
+            var inputValue = document.getElementsByClassName("todos-container-header-form-input")[0].value;
+            let listDiv = document.getElementsByClassName("todos-container-body")[0];
+            let old_todos = Array.from(document.getElementsByClassName("todo-button"))
+            this.currentUserId = parseInt(inputValue);
+            let todos = await this.todosRepository.getTodosByUserId(parseInt(inputValue));
+            if(old_todos.length != 0){
+                  old_todos.forEach(el => listDiv.removeChild(el));
+            }
+            todos.forEach(el => {
+                  this.addTodoToList(this.getTodoHtmlView(el), listDiv);
+            });
       }
 
-      setButton(el){
-            const func =  async () => {
-                  let value = parseInt(el.value);//el.getAttribute('id') == "left-button" ? -1 : 1; 
-                  this.id += value;
-                  let old_node = Array.from(document.getElementsByClassName("post-part"));
-                  let post = await this.post_repository.getPostById(this.id);
-                  let post_view = this.getPostView(post);
-                  let div = document.getElementsByClassName("post-container")[0];
-                  let comment_div = document.getElementsByClassName("post-comments")[0];
-                  if(old_node.length == 0){
-                        div.prepend(post_view);
+      addTodoToList(todoView, listTodo){
+            listTodo.appendChild(todoView);
+      }
+
+      setUpSelectTitleButton(el){
+            let func = () =>{
+                  if(!el.classList.contains("todo-button-selected")){
+                        el.classList.add("todo-button-selected");
                   }
                   else{
-                        div.replaceChild(post_view, old_node[0]);
-                        let old_comments = Array.from(document.getElementsByClassName("post-comment"));
-                        old_comments.forEach(oc => comment_div.removeChild(oc));
-                  }
-                  for(let c of post.comments){
-                        comment_div.append(this.getCommentView(c));
+                        el.classList.remove("todo-button-selected");
                   }
             };
             el.addEventListener("click", func);
       }
-      
-      getPostView(post){
-            let div = document.createElement("div");
-            div.className = "post-part";
-            div.innerHTML =`
-                  <div class="post-header">
-                        <div class="post-header-user">
-                              <img class="post-header-user-icon" src="assets/img/user.png">
-                              <p class="post-header-user-name">${post.user}</p>
-                        </div>
-                  </div>  
-                  <div class="post-body">
-                        <p class="post-body-id">${post.id}</p>
-                        <div class="post-header-title">
-                              <p>${post.title}</p>
-                        </div> 
-                        <p class="post-body-text">${post.body}</p>
-                  </div>
-            `;
-            return div;
-      }
-      
-      getCommentView(comment){
-            let div = document.createElement("div");
-            div.className = "post-comment";
-            div.innerHTML = `
-                  <div class="post-comment-header">
-                        <img class="post-comment-header-icon" src="assets/img/user.png">
-                        <div class="post-comment-header-contacts">
-                              <div class="post-comment-header-contacts-email">
-                                    <p class="post-comment-email-text">${comment.email}</p>
-                              </div>
-                              <div class="post-comment-header-contacts-name">
-                              <p class="post-comment-name-text">${comment.name}</p>
-                              </div>
-                        </div>
-                  </div>
-                  <div class="post-comment-body">
-                        <p class="post-comment-body-text">${comment.body}</p>
-                  </div>
-            `;
-            return div;
-      }
-      async FillScreen(){
-            let post = await this.post_repository.getPostById(this.id);
-            let post_view = this.getPostView(post);
-            let div = document.getElementsByClassName("post-container")[0];
-            div.prepend(post_view);
 
-            let comment_div = document.getElementsByClassName("post-comments")[0];
-            let comments = post.comments;
-            comments.forEach(comment => comment_div.append(this.getCommentView(comment)));
+      setUpDeleteButton(el){
+            let func = () => {
+                  let todos = Array.from(document.getElementsByClassName("todo-button-selected"));
+                  let list = document.getElementsByClassName("todos-container-body")[0];
+                  todos.forEach(el => list.removeChild(el));
+                  todos.forEach(el => this.todosRepository.deleteTodo(el.id_todo));
+            };
+            el.addEventListener("click", func);
+      }
+
+      setUpDefineUserButton(el){
+            let func = async () => {
+                  await this.updateTodoList();
+            };
+            el.addEventListener("click", func);
+      }
+
+      setUpOpenFormButton(el){
+            let func = () => {
+                  if(this.currentUserId != -1){
+                        let window = document.getElementsByClassName("add-newTodo-form")[0];
+                        window.style.display = "flex";
+                  }
+            };
+            el.addEventListener("click", func);
+      }
+
+      setUpCancelButton(el){
+            let func = () => {
+                  let window = document.getElementsByClassName("add-newTodo-form")[0];
+                  window.style.display = "none";
+            };
+            el.addEventListener("click", func);
+      }
+
+      setUpAddNewTodoButton(el){
+            let func = async () => {
+                  let title = document.getElementById("add-newTodo-form-part-input-title").value;
+                  let status = document.getElementById("add-newTodo-form-part-input-checkbox").checked;
+                  let newTodo = new Todo(0, this.currentUserId, title, status);
+                  let result = await this.todosRepository.addTodo(newTodo);
+                  this.addTodoToList(this.getTodoHtmlView(result), document.getElementsByClassName("todos-container-body")[0]);
+                  let window = document.getElementsByClassName("add-newTodo-form")[0];
+                  window.style.display = "none";
+                  
+            };
+            el.addEventListener("click", func);
+      }
+      
+      setUpUpdateCheckBox(el){
+            let func = async (event) => {
+                  let value = !el.checked;
+                  el.checked = value;
+                  let id = el.id_todo;
+                  let oldTodo = await this.todosRepository.getTodoById(id);
+                  let newTodo = new Todo(id, oldTodo.userId, oldTodo.title, !value);
+                  let result = await this.todosRepository.updateTodo(id, newTodo);
+                  el.checked = !value;
+            }
+            el.addEventListener("change", func);
       }
 }
-const post_rep = new PostRepository(new APIController(), new PostMapper(), new CommentMapper());
-const worker = new HTMLWorker(post_rep); 
+
+let todosRep = new TodosRepository(new UsersRepository(new UserApiController()), new TodoApiController());
+let worker = new HTMLWorker(todosRep);
 
 if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init);
@@ -337,9 +474,14 @@ else {
 }
   
 function init(){
-      worker.FillScreen();
-      let buttons = Array.from(document.getElementsByClassName("post-bottom-button"));
-      buttons.forEach((button) => {
-            worker.setButton(button);
-      }); 
+      let defineUserButton = document.getElementsByClassName("todos-container-header-form-button")[0];
+      worker.setUpDefineUserButton(defineUserButton);
+      let openFormAddNewTodoButton = document.getElementsByClassName("todos-container-bottom-button")[0];
+      worker.setUpOpenFormButton(openFormAddNewTodoButton);
+      let addNewTodoButton = document.getElementsByClassName("add-newTodo-form-ok")[0];
+      worker.setUpAddNewTodoButton(addNewTodoButton);
+      let cancelButton = document.getElementsByClassName("add-newTodo-form-cancel")[0];
+      worker.setUpCancelButton(cancelButton);
+      let deleteButton = document.getElementById("delete-button");
+      worker.setUpDeleteButton(deleteButton);
 }
