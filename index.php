@@ -1,50 +1,107 @@
-<?php
-    $title = "Лаб. 16";
-    $time = "Текущее время: " . date("H:m");
+<?
+$a = 1;
+$b = 2;
 
-    function get_date($data) 
-    {
-        $answer = "";
-        $time_parts = explode(" ", $data);
-        $hour = (int)$time_parts[0];
-        $minutes = (int)$time_parts[1];
-        $answer .= $time_parts[0];
-        if($hour % 10 == 1 and $hour != 11 ) {
-            $answer .= " час";
-        }
-        else if ($hour % 10 > 1 and $hour % 10 < 5 and ($hour < 11 or $hour > 14)) {
-            $answer .= " часа";
-        }
-        else {
-            $answer .= " часов";
-        }
-        $answer .= " " . $time_parts[1];
+if($a >= 0 and $b >= 0) {
+    echo "Разность a и b: " . ($a - $b);
+}
+else if($a < 0 and $b < 0) {
+    echo "Произведение a и b: " . ($a * $b); 
+}
+else {
+    echo "Сумма a и b: " . ($a + $b);
+}
 
-        if($minutes % 10 == 1 and $minutes != 11) {
-            $answer .= " минута";
-        }
-        else if ($minutes % 10 > 1 and $minutes % 10 < 5 and ($minutes < 11 or $minutes > 14)) {
-            $answer .= " минуты";
-        }
-        else {
-            $answer .= " минут";
-        }
+$a = rand(0, 15);
+echo "\n";
 
-        return $answer;
+switch ($a) {
+    case 0:
+        echo nl2br("\n0");
+    case 1:
+        echo nl2br("\n1");
+    case 2:
+        echo nl2br("\n2");
+    case 3:
+        echo nl2br("\n3");
+    case 4:
+        echo nl2br("\n4");
+    case 5:
+        echo nl2br("\n5");
+    case 6:
+        echo nl2br("\n6");
+    case 7:
+        echo nl2br("\n7");
+    case 8:
+        echo nl2br("\n8");
+    case 9:
+        echo nl2br("\n9");
+    case 10:
+        echo nl2br("\n10");
+    case 11:
+        echo nl2br("\n11");
+    case 12:
+        echo nl2br("\n12");
+    case 13:
+        echo nl2br("\n13");
+    case 14:
+        echo nl2br("\n14");
+    case 15:
+        echo nl2br("\n15");
+}
+?>
+
+<?
+function plus($a, $b){
+    return $a + $b;
+}
+
+function minus($a, $b){
+    return $a - $b;
+}
+
+function multiply($a, $b){
+    return $a * $b;
+}
+
+function divide($a, $b){
+    if($b == 0) {
+        throw new Error("Division by zero");
     }
+    return $a / $b;
+}
+?>
+
+<?
+function mathOperation($arg1, $arg2, $operation) {
+    switch($operation){
+        case "plus":
+            return plus($arg1, $arg2);
+        case "minus":
+            return minus($arg1, $arg2);
+        case "multiply":
+            return multiply($arg1, $arg2);
+        case "divide":
+            return divide($arg1, $arg2);
+        default:
+            throw new Error("An unknown operation type");
+    }
+}
+
+echo nl2br("\nСложение 10 и 10: " . mathOperation(10, 10, "plus"));
+echo nl2br("\nВычитание 10 и 10: " . mathOperation(10, 10, "minus"));
+echo nl2br("\nУмножение 10 и 10: " . mathOperation(10, 10, "multiply"));
+echo nl2br("\nДеление 10 и 10: " . mathOperation(10, 10, "divide"));
 ?>
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title><? echo $title ?></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-  <main>
-  <? $answer = get_date(date("H m"))  ?>
-  <? echo "<h1>$time</h1>" ?>
-  <? echo "<h1>$answer</h1>" ?>
-  </main>
+    
 </body>
 </html>
