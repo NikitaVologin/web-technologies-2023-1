@@ -1,97 +1,147 @@
 <?
-$a = 1;
-$b = 2;
+//1. С помощью цикла do…while написать функцию для вывода чисел от 0 до 10
 
-if($a >= 0 and $b >= 0) {
-    echo "Разность a и b: " . ($a - $b);
+function printNumbers() {
+    $i = 0;
+    do {
+      if ($i % 2 == 0) {
+        echo nl2br("$i – чётное число.\n");
+      } else {
+        echo nl2br("$i – нечётное число.\n");
+      }
+      $i++;
+    } while ($i <= 10);
 }
-else if($a < 0 and $b < 0) {
-    echo "Произведение a и b: " . ($a * $b); 
-}
-else {
-    echo "Сумма a и b: " . ($a + $b);
-}
-
-$a = rand(0, 15);
-echo "\n";
-
-switch ($a) {
-    case 0:
-        echo nl2br("\n0");
-    case 1:
-        echo nl2br("\n1");
-    case 2:
-        echo nl2br("\n2");
-    case 3:
-        echo nl2br("\n3");
-    case 4:
-        echo nl2br("\n4");
-    case 5:
-        echo nl2br("\n5");
-    case 6:
-        echo nl2br("\n6");
-    case 7:
-        echo nl2br("\n7");
-    case 8:
-        echo nl2br("\n8");
-    case 9:
-        echo nl2br("\n9");
-    case 10:
-        echo nl2br("\n10");
-    case 11:
-        echo nl2br("\n11");
-    case 12:
-        echo nl2br("\n12");
-    case 13:
-        echo nl2br("\n13");
-    case 14:
-        echo nl2br("\n14");
-    case 15:
-        echo nl2br("\n15");
-}
+printNumbers();
 ?>
 
 <?
-function plus($a, $b){
-    return $a + $b;
-}
+//2. Объявить массив, в котором в качестве ключей будут использоваться названия областей,
+// а в качестве значений – массивы с названиями городов из соответствующей области.
 
-function minus($a, $b){
-    return $a - $b;
-}
-
-function multiply($a, $b){
-    return $a * $b;
-}
-
-function divide($a, $b){
-    if($b == 0) {
-        throw new Error("Division by zero");
+$regions = array(
+    "Московская область" => array("Москва", "Зеленоград", "Клин"),
+    "Ленинградская область" => array("Санкт-Петербург", "Всеволожск", "Павловск", "Кронштадт"),
+    "Рязанская область" => array("Рязань", "Касимов", "Скопин", "Сасово")
+  );
+  
+  foreach ($regions as $region => $cities) {
+    echo nl2br("$region:\n");
+    foreach ($cities as $city) {
+      echo nl2br(".....$city\n");
     }
-    return $a / $b;
-}
+  }
 ?>
 
 <?
-function mathOperation($arg1, $arg2, $operation) {
-    switch($operation){
-        case "plus":
-            return plus($arg1, $arg2);
-        case "minus":
-            return minus($arg1, $arg2);
-        case "multiply":
-            return multiply($arg1, $arg2);
-        case "divide":
-            return divide($arg1, $arg2);
-        default:
-            throw new Error("An unknown operation type");
-    }
-}
+//3. Объявить массив, индексами которого являются буквы русского языка, 
+//а значениями – соответствующие латинские буквосочетания 
+//Написать функцию транслитерации строк.
 
-echo nl2br("\nСложение 10 и 10: " . mathOperation(10, 10, "plus"));
-echo nl2br("\nВычитание 10 и 10: " . mathOperation(10, 10, "minus"));
-echo nl2br("\nУмножение 10 и 10: " . mathOperation(10, 10, "multiply"));
-echo nl2br("\nДеление 10 и 10: " . mathOperation(10, 10, "divide"));
+$cyrillicToLatin = array(
+    'а' => 'a',
+    'б' => 'b',
+    'в' => 'v',
+    'г' => 'g',
+    'д' => 'd',
+    'е' => 'e',
+    'ё' => 'yo',
+    'ж' => 'zh',
+    'з' => 'z',
+    'и' => 'i',
+    'й' => 'y',
+    'к' => 'k',
+    'л' => 'l',
+    'м' => 'm',
+    'н' => 'n',
+    'о' => 'o',
+    'п' => 'p',
+    'р' => 'r',
+    'с' => 's',
+    'т' => 't',
+    'у' => 'u',
+    'ф' => 'f',
+    'х' => 'h',
+    'ц' => 'c',
+    'ч' => 'ch',
+    'ш' => 'sh',
+    'щ' => 'shch',
+    'ъ' => '`b',
+    'ы' => 'y',
+    'ь' => '``b',
+    'э' => 'e',
+    'ю' => 'yu',
+    'я' => 'ya'
+  );
+
+  function transliterate($text, $cyrillicToLatin) {
+    $transliteratedText = '';
+    for ($i = 0; $i < strlen($text); $i++) {
+      $char = mb_substr($text, $i, 1);
+      if (isset($cyrillicToLatin[$char])) {
+        $transliteratedText .= $cyrillicToLatin[$char];
+      } else {
+        $transliteratedText .= $char;
+      }
+    }
+    return $transliteratedText;
+  }
+  
+  $originalText = 'привет, мир!';
+  $transliteratedText = transliterate($originalText, $cyrillicToLatin);
+  
+  echo nl2br("Оригинальный текст: $originalText\n");
+  echo nl2br("Транслитерированный текст: $transliteratedText\n");
+?>
+
+<?
+//4. В имеющемся шаблоне сайта заменить статичное меню (ul - li) на генерируемое через PHP.
+//Необходимо представить пункты меню как элементы массива и вывести их циклом. 
+//Подумать, как можно реализовать меню с вложенными подменю? Попробовать его реализовать.
+
+$menuItems = array(
+    'Главная',
+    'О нас',
+    'Услуги',
+    'Портфолио',
+    'Контакты',
+    'Подменю 1' => array(
+      'Пункт 1',
+      'Пункт 2',
+      'Пункт 3' 
+    )
+  );
+  
+  echo '<ul>';
+  foreach ($menuItems as $menuItem => $subMenuItems) {
+    echo '<li>';
+    if (is_array($subMenuItems)) {
+      echo '<a href="#">' . $menuItem . '</a>';
+      echo '<ul>';
+      foreach ($subMenuItems as $subMenuItem) {
+        echo '<li><a href="#">' . $subMenuItem . '</a></li>';
+      }
+      echo '</ul>';
+    } else {
+      echo '<a href="#">' . $menuItem . '</a>';
+    }
+    echo '</li>';
+  }
+  echo '</ul>';
+?>
+
+<? 
+//6. *Повторить 2 задание, но вывести на экран только города, начинающиеся с буквы “К”.
+
+  $kCities = array();
+  foreach ($regions as $region => $cities) {
+    foreach ($cities as $city) {
+      if (mb_substr($city, 0, 1) == 'К') {
+        $kCities[] = $city;
+      }
+    }
+  }
+  echo implode(", ", $kCities);
 ?>
 
 <!DOCTYPE html>
