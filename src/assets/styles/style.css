@@ -1,9 +1,33 @@
-@import "./global.css";
-@import "./fonts.css";
-@import "./header.css";
-@import "./main.css";
-@import "./loader.css";
-@import "./form.css";
-@import "./text-field.css";
-@import "./button.css";
-@import "./todos.css"
+.products {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 1000px;
+    height: 100%;
+}
+
+.product-card {
+    width: 300px;
+    height: 300px;
+}
+
+.product-card-body {
+
+}
+
+.product-card-more {
+
+}
+
+.text {
+    font-weight: bold;
+    text-decoration: none;
+    color: #000;
+}
+
+.reviews {
+    width: 300px;
+    height: 300px;
+    overflow-y: scroll;
+}
